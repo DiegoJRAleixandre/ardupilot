@@ -209,7 +209,7 @@ const AP_Param::GroupInfo AP_Mount::var_info[] = {
 
     // 24 is AVAILABLE
 
-    AP_GROUPINFO("_T_Zm_CH", 20, AP_Mount, state[0]._Zoom_ch, 6),
+    AP_GROUPINFO("_T_Zm_CH", 20, AP_Mount, state[0]._Zoom_ch, 8),
 
     AP_GROUPINFO("_T_Vid_CH", 21, AP_Mount, state[0]._Video_ch, 7),
 
