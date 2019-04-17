@@ -213,21 +213,21 @@ const AP_Param::GroupInfo AP_Mount::var_info[] = {
 
     AP_GROUPINFO("_T_Vid_CH", 21, AP_Mount, state[0]._Video_ch, 7),
 
-    AP_GROUPINFO("_T_Rec_CH", 22, AP_Mount, state[0]._Rec_ch, 8),
+    AP_GROUPINFO("_T_Rec_CH", 22, AP_Mount, state[0]._Rec_ch, 6),
 
-    AP_GROUPINFO("_T_trck_CH", 23, AP_Mount, state[0]._Track_ch, 10),
+    AP_GROUPINFO("_T_trck_CH", 23, AP_Mount, state[0]._Track_ch, 1),
 
-    AP_GROUPINFO("_T_Spd_mn", 24, AP_Mount, state[0]._Speed_min, 8),
+    AP_GROUPINFO("_T_Spd_mn", 24, AP_Mount, state[0]._Speed_min, 6),
 
     AP_GROUPINFO("_T_Spd_mx", 25, AP_Mount, state[0]._Speed_max, 80),
 
-    AP_GROUPINFO("_T_kPmin", 26, AP_Mount, state[0]._kpmin, 0.003),
+    AP_GROUPINFO("_T_kPmin", 26, AP_Mount, state[0]._kpmin, 0.002),
 
     AP_GROUPINFO("_T_kPmax", 27, AP_Mount, state[0]._kpmax, 0.006),
 
     AP_GROUPINFO("_T_EOaux", 28, AP_Mount, state[0]._EOAux_ch, 5),
 
-    AP_GROUPINFO("_T_IRaux", 29, AP_Mount, state[0]._IRAux_ch, 6),
+    AP_GROUPINFO("_T_IRaux", 29, AP_Mount, state[0]._IRAux_ch, 10),
 
 
 #if AP_MOUNT_MAX_INSTANCES > 1
