@@ -738,3 +738,18 @@ void SRV_Channels::set_rc_frequency(SRV_Channel::Aux_servo_function_t function, 
         hal.rcout->set_freq(mask, frequency_hz);
     }
 }
+
+//Ermanece-Dev: set servos for camera or larguer functionalities. If not set to max, the servo is set to min
+void SRV_Channels::set_custom_output_pwm(SRV_Channel::Aux_servo_function_t function, bool max)
+{
+    if (!function_assigned(function)) {
+        return;
+    }
+    for (uint8_t i = 0; i < NUM_SERVO_CHANNELS; i++) {
+        SRV_Channel &c = channels[i];
+        if (channels[i].function.get() == function) {
+            channels[i].set_output_pwm(max ? c.servo_max : c.servo_min);
+            channels[i].output_ch();
+        }
+    }
+}
