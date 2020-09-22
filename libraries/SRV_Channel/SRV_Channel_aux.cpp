@@ -230,6 +230,22 @@ void SRV_Channels::set_output_pwm(SRV_Channel::Aux_servo_function_t function, ui
 }
 
 /*
+  Ermanece-Dev: set servos for camera or larguer functionalities. If not set to max, the servo is set to min
+ */
+void SRV_Channels::set_output_pwm_custom(SRV_Channel::Aux_servo_function_t function, bool max)
+{
+    if (!function_assigned(function)) {
+        return;
+    }
+    for (uint8_t i = 0; i < NUM_SERVO_CHANNELS; i++) {
+        if (channels[i].function.get() == function) {
+            channels[i].set_output_pwm(max ? channels[i].get_output_max() : channels[i].get_output_min());
+            channels[i].output_ch();
+        }
+    }
+}
+
+/*
   set radio_out for all channels matching the given function type
   trim the output assuming a 1500 center on the given value
   reverses pwm output based on channel reversed property

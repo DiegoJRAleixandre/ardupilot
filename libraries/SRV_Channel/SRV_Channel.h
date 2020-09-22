@@ -156,6 +156,9 @@ public:
         k_ProfiLED_2            = 130,
         k_ProfiLED_3            = 131,
         k_ProfiLED_Clock        = 132,
+        k_cameraMode            = 140,
+        k_larguerBouee          = 141,
+        k_larguerFluoresceine   = 142,
         k_nr_aux_servo_functions         ///< This must be the last enum value (only add new values _before_ this one)
     } Aux_servo_function_t;
 
@@ -311,6 +314,9 @@ public:
 
     // set output value for a function channel as a pwm value
     static void set_output_pwm(SRV_Channel::Aux_servo_function_t function, uint16_t value);
+
+    //Ermanence-Dev: custom set output function
+    static void set_output_pwm_custom(SRV_Channel::Aux_servo_function_t function, bool max);
 
     // set output value for a function channel as a pwm value on the first matching channel
     static void set_output_pwm_first(SRV_Channel::Aux_servo_function_t function, uint16_t value);
