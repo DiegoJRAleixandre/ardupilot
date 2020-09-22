@@ -860,6 +860,45 @@ MAV_RESULT GCS_MAVLINK_Copter::handle_command_long_packet(const mavlink_command_
         return MAV_RESULT_ACCEPTED;
     }
 
+    //Ermanence-Dev: reception of MAV_CMD_USER comands
+    case MAV_CMD_USER_1: {
+        // param1 : 1->camera mode, 2->larguer bouee, 3->larguer fluoresceine
+        // param2 : 0-> LOW, 1-> HIGH
+        switch ((uint8_t)packet.param1)
+        {
+        case 1:
+            if (!(uint8_t)packet.param2){
+                SRV_Channels::set_output_pwm_custom(SRV_Channel::k_cameraMode, false);
+            } else {
+                SRV_Channels::set_output_pwm_custom(SRV_Channel::k_cameraMode, true);
+            }
+            break;
+        case 2:
+            if (!(uint8_t)packet.param2){
+                SRV_Channels::set_output_pwm_custom(SRV_Channel::k_larguerBouee, false);
+            } else {
+                SRV_Channels::set_output_pwm_custom(SRV_Channel::k_larguerBouee, true);
+            }
+            break;
+        case 3:
+            if (!(uint8_t)packet.param2){
+                SRV_Channels::set_output_pwm_custom(SRV_Channel::k_larguerFluoresceine, false);
+            } else {
+                SRV_Channels::set_output_pwm_custom(SRV_Channel::k_larguerFluoresceine, true);
+            }
+            break;
+        
+        default:
+            break;
+        }
+        return MAV_RESULT_ACCEPTED;
+    }
+
+    case MAV_CMD_USER_2: {
+        copter.set_simple_mode((uint8_t)packet.param1);
+        return MAV_RESULT_ACCEPTED;
+    }
+
     default:
         return GCS_MAVLINK::handle_command_long_packet(packet);
     }
