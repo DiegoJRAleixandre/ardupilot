@@ -632,6 +632,7 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const AuxSwi
             gcs().send_text(MAV_SEVERITY_INFO, "Active proximity hold not available");
             break;
 #endif
+        break;
 
     default:
         RC_Channel::do_aux_function(ch_option, ch_flag);
