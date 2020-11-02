@@ -239,7 +239,11 @@ void SRV_Channels::set_output_pwm_custom(SRV_Channel::Aux_servo_function_t funct
     }
     for (uint8_t i = 0; i < NUM_SERVO_CHANNELS; i++) {
         if (channels[i].function.get() == function) {
-            channels[i].set_output_pwm(max ? channels[i].get_output_max() : channels[i].get_output_min());
+            if ( channels[i].get_reversed() ) {
+                channels[i].set_output_pwm(max ? channels[i].get_output_min() : channels[i].get_output_max());
+            } else {
+                channels[i].set_output_pwm(max ? channels[i].get_output_max() : channels[i].get_output_min());
+            }
             channels[i].output_ch();
         }
     }
