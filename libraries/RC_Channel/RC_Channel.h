@@ -188,6 +188,7 @@ public:
         SOARING =             88, // three-position switch to set soaring mode
         PROXIMITY_AUTO_YAW =  89, // enable or disable automatic yawing to face closest obstacle
         PROX_DIST_HOLD  =     90, // enable / disable proximity distance hold
+        TAKE_PHOTO =          91, // Take single photo using Multinnovs PCB and PWM assigned values
 
         // entries from 100 onwards are expected to be developer
         // options used for testing

@@ -89,6 +89,7 @@ void RC_Channel_Copter::init_aux_function(const aux_func_t ch_option, const AuxS
     case AUX_FUNC::SAVE_WP:
     case AUX_FUNC::SMART_RTL:
     case AUX_FUNC::STABILIZE:
+    case AUX_FUNC::TAKE_PHOTO:
     case AUX_FUNC::THROW:
     case AUX_FUNC::USER_FUNC1:
     case AUX_FUNC::USER_FUNC2:
@@ -633,6 +634,19 @@ void RC_Channel_Copter::do_aux_function(const aux_func_t ch_option, const AuxSwi
             break;
 #endif
         break;
+
+        case AUX_FUNC::TAKE_PHOTO:
+            switch (ch_flag) {
+            case AuxSwitchPos::HIGH:
+                SRV_Channels::set_output_pwm(SRV_Channel::k_cameraMode, 1520); //1520 corresponds to stop recording/Stop taking photo
+                break;
+            case AuxSwitchPos::LOW:
+                SRV_Channels::set_output_pwm(SRV_Channel::k_cameraMode, 1080); //1080 of PWM corresponds to take photo
+                break;
+            case AuxSwitchPos::MIDDLE:
+                break;
+            }
+            break;
 
     default:
         RC_Channel::do_aux_function(ch_option, ch_flag);
