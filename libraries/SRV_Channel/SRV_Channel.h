@@ -159,6 +159,7 @@ public:
         k_winch_clutch          = 133,
         k_cameraMode            = 140,
         k_ledsPower             = 141,
+        k_ledsMode              = 142,
         k_nr_aux_servo_functions         ///< This must be the last enum value (only add new values _before_ this one)
     } Aux_servo_function_t;
 

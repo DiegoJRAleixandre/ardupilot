@@ -972,6 +972,7 @@ MAV_RESULT GCS_MAVLINK_Copter::handle_command_long_packet(const mavlink_command_
     case MAV_CMD_USER_2: {
         //param1: 0->CameraMode, 1->LED
         //param2: PWM value to input
+        //param3: PWM for LED modes
         if ((uint16_t)packet.param2 >= 1000 && (uint16_t)packet.param2 <= 2000) {
             switch ((uint8_t)packet.param1)
             {
@@ -981,6 +982,7 @@ MAV_RESULT GCS_MAVLINK_Copter::handle_command_long_packet(const mavlink_command_
                     break;
                 case 1:
                     SRV_Channels::set_output_pwm(SRV_Channel::k_ledsPower, (uint16_t)packet.param2);
+                    SRV_Channels::set_output_pwm(SRV_Channel::k_ledsMode, (uint16_t)packet.param3);
                     return MAV_RESULT_ACCEPTED;
                     break;
                 default:
