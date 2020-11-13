@@ -88,6 +88,9 @@ public:
     // return margin (in meters) that the vehicle should stay from objects
     float get_margin() const { return _margin; }
 
+    // return margin_roof (in meters) that the vehicle should stay from objects
+    float get_margin_roof() const { return _margin_roof; }
+
     // return true if limiting is active
     bool limits_active() const {return (AP_HAL::millis() - _last_limit_time) < AC_AVOID_ACTIVE_LIMIT_TIMEOUT_MS;};
 
@@ -178,6 +181,7 @@ private:
     AP_Float _margin;           // vehicle will attempt to stay this distance (in meters) from objects while in GPS modes
     AP_Int8 _behavior;          // avoidance behaviour (slide or stop)
     AP_Float _backup_speed_max; // Maximum speed that will be used to back away (in m/s)
+    AP_Float _margin_roof;      // Distance (in meters) from surfaces directly in front of lidar set as TOP
 
     bool _proximity_enabled = true; // true if proximity sensor based avoidance is enabled (used to allow pilot to enable/disable)
     uint32_t _last_limit_time;      // the last time a limit was active
