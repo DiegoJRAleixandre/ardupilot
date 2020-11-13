@@ -84,6 +84,14 @@ const AP_Param::GroupInfo AC_Avoid::var_info[] = {
     // @User: Standard
     AP_GROUPINFO("MARGIN_RF", 7, AC_Avoid, _margin_roof, 2.0f),
 
+    // @Param: MARGIN_ADVANCE
+    // @DisplayName: Distance at wich avoid will work
+    // @Description: Vehicle wont try to mantain a distance from the wall unless its at a distance smaller than this one
+    // @Units: m
+    // @Range: 1 10
+    // @User: Standard
+    AP_GROUPINFO("ADVANCE", 8, AC_Avoid, _advance_margin, 3.0f),
+
     AP_GROUPEND
 };
 
@@ -941,6 +949,8 @@ void AC_Avoid::adjust_velocity_polygon(float kP, float accel_cmss, Vector2f &des
 
     // calc margin in cm
     const float margin_cm = MAX(margin * 100.0f, 0.0f);
+    // calc advance margin in cm
+    const float advance_margin_cm = MAX(_advance_margin * 100.0f, 0.0f);
 
     // for stopping
     const float speed = safe_vel.length();
@@ -965,7 +975,7 @@ void AC_Avoid::adjust_velocity_polygon(float kP, float accel_cmss, Vector2f &des
         // back away if vehicle has breached margin
         // or advance if active hold is enabled and within 1.5x the margin
         // hard coded deadzone of 0.5m, (25cm each way)
-        if ( (is_positive(back_up_dist) || (active_hold && _active_hold && (back_up_dist > (margin_cm * -0.5f))) ) && (fabsf(back_up_dist) > 25.0f) ) {
+        if ( (is_positive(back_up_dist) || (active_hold && _active_hold && (back_up_dist > (margin_cm - advance_margin_cm))) ) && (fabsf(back_up_dist) > 25.0f) ) {
             calc_backup_velocity(kP, accel_cmss, quad_1_back_vel, quad_2_back_vel, quad_3_back_vel, quad_4_back_vel, back_up_dist, vector_to_boundary, dt);
         }
 

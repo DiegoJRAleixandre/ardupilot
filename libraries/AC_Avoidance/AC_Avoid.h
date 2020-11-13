@@ -182,6 +182,7 @@ private:
     AP_Int8 _behavior;          // avoidance behaviour (slide or stop)
     AP_Float _backup_speed_max; // Maximum speed that will be used to back away (in m/s)
     AP_Float _margin_roof;      // Distance (in meters) from surfaces directly in front of lidar set as TOP
+    AP_Float _advance_margin;   // Distance at wich avoid will work
 
     bool _proximity_enabled = true; // true if proximity sensor based avoidance is enabled (used to allow pilot to enable/disable)
     uint32_t _last_limit_time;      // the last time a limit was active
