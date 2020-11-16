@@ -919,17 +919,17 @@ MAV_RESULT GCS_MAVLINK_Copter::handle_command_long_packet(const mavlink_command_
     }
 
     case MAV_CMD_USER_1: {
-        //param1: 0->wall mode, 1->roof mode, 2->align yaw, 3-Distance setting
+        //param1: 0->Ground mode, 1->roof mode, 2->align yaw, 3-Distance setting
         //param2: PWM value to input
         switch ((uint8_t)packet.param1)
         {
         case 0:
             if (packet.param2 <= 0) {
-                copter.avoid.set_active_proximity_hold(false);
-                gcs().send_text(MAV_SEVERITY_INFO, "Wall disabled"); 
+                copter.surface_tracking.set_surface(Copter::SurfaceTracking::Surface::NONE);
+                gcs().send_text(MAV_SEVERITY_INFO, "Ground disabled"); 
             } else {
-                copter.avoid.set_active_proximity_hold(true);
-                gcs().send_text(MAV_SEVERITY_INFO, "Wall enabled"); 
+                copter.surface_tracking.set_surface(Copter::SurfaceTracking::Surface::GROUND);
+                gcs().send_text(MAV_SEVERITY_INFO, "Ground enabled"); 
             }
             return MAV_RESULT_ACCEPTED;
             break;
