@@ -290,6 +290,10 @@ bool GCS_MAVLINK_Copter::try_send_message(enum ap_message id)
         break;
     }
 
+    case MSG_ERM_TRACKER:
+        copter.erm_companion.send_tracker_status(chan);
+        break;
+
     default:
         return GCS_MAVLINK::try_send_message(id);
     }
@@ -387,6 +391,9 @@ const AP_Param::GroupInfo GCS_MAVLINK_Parameters::var_info[] = {
     // @Increment: 1
     // @User: Advanced
     AP_GROUPINFO("ADSB",   9, GCS_MAVLINK_Parameters, streamRates[9],  0),
+
+    AP_GROUPINFO("TRACKER",   10, GCS_MAVLINK_Parameters, streamRates[10],  1),
+
 AP_GROUPEND
 };
 
@@ -458,6 +465,9 @@ static const ap_message STREAM_PARAMS_msgs[] = {
 static const ap_message STREAM_ADSB_msgs[] = {
     MSG_ADSB_VEHICLE
 };
+static const ap_message STREAM_ERM_msgs[] = {
+    MSG_ERM_TRACKER
+};
 
 const struct GCS_MAVLINK::stream_entries GCS_MAVLINK::all_stream_entries[] = {
     MAV_STREAM_ENTRY(STREAM_RAW_SENSORS),
@@ -469,6 +479,7 @@ const struct GCS_MAVLINK::stream_entries GCS_MAVLINK::all_stream_entries[] = {
     MAV_STREAM_ENTRY(STREAM_EXTRA3),
     MAV_STREAM_ENTRY(STREAM_ADSB),
     MAV_STREAM_ENTRY(STREAM_PARAMS),
+    MAV_STREAM_ENTRY(STREAM_ERM),
     MAV_STREAM_TERMINATOR // must have this at end of stream_entries
 };
 
@@ -897,6 +908,26 @@ MAV_RESULT GCS_MAVLINK_Copter::handle_command_long_packet(const mavlink_command_
     case MAV_CMD_USER_2: {
         copter.set_simple_mode((uint8_t)packet.param1);
         return MAV_RESULT_ACCEPTED;
+    }
+
+    case MAV_CMD_USER_3: {
+        switch ((uint8_t)packet.param1) {
+
+            case 1:
+                copter.erm_companion.startTracking((uint16_t)packet.param2,
+                                                   (uint16_t)packet.param3, 
+                                                   (uint16_t)packet.param4, 
+                                                   (uint16_t)packet.param5);
+                return MAV_RESULT_ACCEPTED;
+            
+            case 2:
+                copter.erm_companion.stopTracking();
+                return MAV_RESULT_ACCEPTED;
+            
+            default:
+                return MAV_RESULT_FAILED;
+        
+        }
     }
 
     default:
