@@ -189,6 +189,11 @@
 #include <SITL/SITL.h>
 #endif
 
+// Arys Ecu
+#if AP_ERM_COMPANION == ENABLED
+ #include <AP_Erm_Companion/AP_Erm_Companion.h>
+#endif
+
 #include "mode.h"
 
 class Copter : public AP_Vehicle {
@@ -561,6 +566,10 @@ private:
 
     // avoidance of adsb enabled vehicles (normally manned vehicles)
     AP_Avoidance_Copter avoidance_adsb{adsb};
+#endif
+
+#if AP_ERM_COMPANION == ENABLED
+    AP_Erm_Companion erm_companion;
 #endif
 
     // last valid RC input time

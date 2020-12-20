@@ -168,6 +168,10 @@ void Copter::init_ardupilot()
     camera_mount.init();
 #endif
 
+#if AP_ERM_COMPANION == ENABLED
+    erm_companion.init();
+#endif
+
 #if PRECISION_LANDING == ENABLED
     // initialise precision landing
     init_precland();

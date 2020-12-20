@@ -152,6 +152,11 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #if MOUNT == ENABLED
     SCHED_TASK_CLASS(AP_Mount,             &copter.camera_mount,        update,          50,  75),
 #endif
+
+#if AP_ERM_COMPANION == ENABLED
+    SCHED_TASK_CLASS(AP_Erm_Companion,     &copter.erm_companion,       update,          25,  75),
+#endif
+
 #if CAMERA == ENABLED
     SCHED_TASK_CLASS(AP_Camera,            &copter.camera,              update_trigger,  50,  75),
 #endif
