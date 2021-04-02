@@ -267,7 +267,7 @@ public:
         //
         k_param_camera = 165,
         k_param_camera_mount,
-        k_param_camera_mount2,      // deprecated
+        k_param_visionAerial_camera,      //#VisionAerial
 
         //
         // Battery monitoring parameters

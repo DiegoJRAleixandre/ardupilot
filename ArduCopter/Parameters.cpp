@@ -474,6 +474,12 @@ const AP_Param::Info Copter::var_info[] = {
     GOBJECT(camera,           "CAM_", AP_Camera),
 #endif
 
+#if VISIONAERIAL_CAMERA == ENABLED
+    // @Group: VA_
+    // @Path: ../libraries/AP_VisionAerial_Camera/AP_VisionAerial_Camera.cpp
+    GOBJECT(visionAerial_camera,    "VA_", AP_VisionAerial_Camera),
+#endif
+
     // @Group: RELAY_
     // @Path: ../libraries/AP_Relay/AP_Relay.cpp
     GOBJECT(relay,                  "RELAY_", AP_Relay),
