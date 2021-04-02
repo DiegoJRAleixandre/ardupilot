@@ -695,6 +695,11 @@ void AP_Mount::send_gimbal_report(mavlink_channel_t chan)
     }    
 }
 
+//#VisionAerial
+void AP_Mount::set_joystick_speed_multiplier(float factor)
+{
+        _joystick_speed_multiplier = factor;
+}
 
 // singleton instance
 AP_Mount *AP_Mount::_singleton;

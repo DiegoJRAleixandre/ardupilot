@@ -85,7 +85,7 @@ void AP_Mount_Backend::rate_input_rad(float &out, const RC_Channel *chan, float 
     if ((chan == nullptr) || (chan->get_radio_in() == 0)) {
         return;
     }
-    out += chan->norm_input_dz() * 0.0001f * _frontend._joystick_speed;
+    out += chan->norm_input_dz() * 0.0001f * _frontend._joystick_speed * _frontend._joystick_speed_multiplier;//#VisionAerial: added multiplier
     out = constrain_float(out, radians(min*0.01f), radians(max*0.01f));
 }
 

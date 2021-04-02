@@ -125,6 +125,9 @@ public:
     // parameter var table
     static const struct AP_Param::GroupInfo        var_info[];
 
+    //#VisionAerial
+    void set_joystick_speed_multiplier(float factor);
+
 protected:
 
     static AP_Mount *_singleton;
@@ -134,6 +137,7 @@ protected:
 
     // frontend parameters
     AP_Int8             _joystick_speed;    // joystick gain
+    float               _joystick_speed_multiplier;//#VisionAerial: Multiplier for joystick speed depending on zoom value
 
     // front end members
     uint8_t             _num_instances;     // number of mounts instantiated
