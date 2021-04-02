@@ -289,6 +289,9 @@ bool GCS_MAVLINK_Copter::try_send_message(enum ap_message id)
 #endif
         break;
     }
+    case MSG_VA_CAMERA:
+        copter.visionAerial_camera.sendCameraStatus(chan);
+        break;
 
     default:
         return GCS_MAVLINK::try_send_message(id);
@@ -387,6 +390,8 @@ const AP_Param::GroupInfo GCS_MAVLINK_Parameters::var_info[] = {
     // @Increment: 1
     // @User: Advanced
     AP_GROUPINFO("ADSB",   9, GCS_MAVLINK_Parameters, streamRates[9],  0),
+
+    AP_GROUPINFO("CAMERA",   10, GCS_MAVLINK_Parameters, streamRates[10],  1),
 AP_GROUPEND
 };
 
@@ -458,6 +463,9 @@ static const ap_message STREAM_PARAMS_msgs[] = {
 static const ap_message STREAM_ADSB_msgs[] = {
     MSG_ADSB_VEHICLE
 };
+static const ap_message STREAM_VA_msgs[] = {
+    MSG_VA_CAMERA
+};
 
 const struct GCS_MAVLINK::stream_entries GCS_MAVLINK::all_stream_entries[] = {
     MAV_STREAM_ENTRY(STREAM_RAW_SENSORS),
@@ -469,6 +477,7 @@ const struct GCS_MAVLINK::stream_entries GCS_MAVLINK::all_stream_entries[] = {
     MAV_STREAM_ENTRY(STREAM_EXTRA3),
     MAV_STREAM_ENTRY(STREAM_ADSB),
     MAV_STREAM_ENTRY(STREAM_PARAMS),
+    MAV_STREAM_ENTRY(STREAM_VA),
     MAV_STREAM_TERMINATOR // must have this at end of stream_entries
 };
 
@@ -858,6 +867,90 @@ MAV_RESULT GCS_MAVLINK_Copter::handle_command_long_packet(const mavlink_command_
             }
         }
         return MAV_RESULT_ACCEPTED;
+    }
+
+    case MAV_CMD_USER_1: {
+
+        //Param1: Use to select command
+        //0 -> UNUSED
+        //1 -> Capture
+        //2 -> Record
+        //3 -> Main Camera
+        //4 -> Camera Layout
+        //5 -> Zoom Visible
+        //6 -> Zoom Thermal
+
+        //Param2: used to select value
+        //Capture:          1->Capture
+        //Record:           0->Stop recording, 1->Start recording
+        //Main Camera:      0->Visible, 1->Thermal
+        //Camera Layout:    0->INSPECTION, 1->SECURITY, 2->FULLSCREEN, 3->PIP
+        //Zoom:             index of zoom
+
+        switch ((uint8_t)packet.param1) {
+            case 1:
+                if ((uint8_t)packet.param2 == 1) {
+                    copter.visionAerial_camera.capturePhoto();
+                    return MAV_RESULT_ACCEPTED;
+                } else {
+                    return MAV_RESULT_FAILED;
+                }
+                break;
+            case 2:
+                if ((uint8_t)packet.param2 == 0) {
+                    copter.visionAerial_camera.stopRecording();
+                    return MAV_RESULT_ACCEPTED;
+                } else if ((uint8_t)packet.param2 == 1) {
+                    copter.visionAerial_camera.startRecording();
+                    return MAV_RESULT_ACCEPTED;
+                } else {
+                    return MAV_RESULT_FAILED;
+                }
+                break;
+            case 3:
+                if ((uint8_t)packet.param2 == 0) {
+                    copter.visionAerial_camera.setMainCamera(0);//Set VISIBLE
+                    return MAV_RESULT_ACCEPTED;
+                } else if ((uint8_t)packet.param2 == 1) {
+                    copter.visionAerial_camera.setMainCamera(1);//Set THERMAL
+                    return MAV_RESULT_ACCEPTED;
+                } else {
+                    return MAV_RESULT_FAILED;
+                }
+                break;
+            case 4:
+                switch ((uint8_t)packet.param2) {
+                    case 0:
+                        copter.visionAerial_camera.setLayout(0);//Set INSPECTION
+                        return MAV_RESULT_ACCEPTED;
+                        break;
+                    case 1:
+                        copter.visionAerial_camera.setLayout(1);//Set SECURITY
+                        return MAV_RESULT_ACCEPTED;
+                        break;
+                    case 2:
+                        copter.visionAerial_camera.setLayout(2);//Set FULLSCREEN
+                        return MAV_RESULT_ACCEPTED;
+                        break;
+                    case 3:
+                        copter.visionAerial_camera.setLayout(3);//Set PIP
+                        return MAV_RESULT_ACCEPTED;
+                        break;
+                    default:
+                        return MAV_RESULT_FAILED;
+                }
+                break;
+            case 5:
+                copter.visionAerial_camera.setZoomVisible((uint8_t)packet.param2);
+                return MAV_RESULT_ACCEPTED;
+                break;
+            case 6:
+                copter.visionAerial_camera.setZoomThermal((uint8_t)packet.param2);
+                return MAV_RESULT_ACCEPTED;
+                break;
+            default:
+                return MAV_RESULT_FAILED;
+        }
     }
 
     default:
