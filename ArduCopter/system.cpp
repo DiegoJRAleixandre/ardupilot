@@ -168,6 +168,10 @@ void Copter::init_ardupilot()
     camera_mount.init();
 #endif
 
+#if VISIONAERIAL_CAMERA == ENABLED
+    visionAerial_camera.init();
+#endif
+
 #if PRECISION_LANDING == ENABLED
     // initialise precision landing
     init_precland();

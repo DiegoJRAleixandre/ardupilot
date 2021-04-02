@@ -189,6 +189,10 @@
 #include <SITL/SITL.h>
 #endif
 
+#if VISIONAERIAL_CAMERA == ENABLED
+ #include <AP_VisionAerial_Camera/AP_VisionAerial_Camera.h>
+#endif 
+
 #include "mode.h"
 
 class Copter : public AP_Vehicle {
@@ -561,6 +565,10 @@ private:
 
     // avoidance of adsb enabled vehicles (normally manned vehicles)
     AP_Avoidance_Copter avoidance_adsb{adsb};
+#endif
+
+#if VISIONAERIAL_CAMERA == ENABLED
+    AP_VisionAerial_Camera visionAerial_camera;
 #endif
 
     // last valid RC input time
