@@ -473,6 +473,13 @@ void AP_SerialManager::init()
                     AP::RC().add_uart(state[i].uart);
                     break;
 #endif
+                case SerialProtocol_VisionAerial_Camera:
+                //Baudrate harcoded to 115200 following WIRIS definition
+                    state[i].baud = 115200 / 1000; // update baud param in case user looks at it
+                    state[i].uart->begin(map_baudrate(state[i].baud),
+                                         256,   //RX buffer is hardcoded
+                                         256);  //TX buffer is hardcoded
+                    break;
                     
                 default:
                     state[i].uart->begin(map_baudrate(state[i].baud));
