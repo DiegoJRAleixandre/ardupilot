@@ -52,10 +52,10 @@ function update()
     end
 
     -- to use raw voltage
-    local voltage = battery:voltage(battery_instance)
+    -- local voltage = battery:voltage(battery_instance)
 
     -- to use compensated voltage
-    -- local voltage = battery:voltage_resting_estimate(battery_instance)
+    local voltage = battery:voltage_resting_estimate(battery_instance)
 
     -- Calculate the remaining percentage from voltage from the interpolation table
     local percentage = interp_table(voltage)
